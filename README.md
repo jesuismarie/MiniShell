@@ -46,7 +46,7 @@ To get started with MiniShell, follow these steps:
    make configure
    ```
 
-   - If you are using a Debian-based Linux distribution, such as Ubuntu, and you don't have the Readline library installed, you can install it using the `apt` package manager. Follow these steps:
+   If you are using a Debian-based Linux distribution, such as Ubuntu, and you don't have the Readline library installed, you can install it using the `apt` package manager. Follow these steps:
 
    - a. Open a terminal window.
 
