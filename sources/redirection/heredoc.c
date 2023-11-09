@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:53:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/06 18:42:18 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/09 16:16:14 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	heredoc(t_shell *shell, t_ast_node *lim, t_pipe	here)
 		if (!(word->flag & (SQUOTES | DQUOTES)))
 			line = expand_param(shell, s);
 		ft_putstr_fd(line, here.out_fd);
-		if (ft_strcmp(line, s))
-			free(line);
 		if (s)
 			free(s);
 	}

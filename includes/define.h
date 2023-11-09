@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/06 18:45:51 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:49:06 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,9 +147,19 @@ typedef struct s_brace
 	t_ast_node_type	type;
 }	t_brace;
 
+typedef struct s_env
+{
+	char			*var_name;
+	char			*var_value;
+	int				hidden;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
 typedef struct s_shell
 {
 	char		**env;
+	t_env		*env_lst;
 	char		*line;
 	t_ast_node	*tree;
 	int			ex_code;

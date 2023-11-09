@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/06 18:34:17 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:51:12 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,9 @@
 
 int	g_stat = 0;
 
-static void	minishell_init(int argc, char **argv, char **envp)
+static void	minishell_init(int argc, char **argv)
 {
 	(void)argv;
-	(void)envp;
 	if (argc != 1)
 		exit(0);
 	printf("\033[34m       _     _     _       _ _ \n\033[0m");
@@ -32,7 +31,8 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 	t_token	*tok_lst;
 
-	minishell_init(argc, argv, envp);
+	minishell_init(argc, argv);
+	shell.env_lst = get_env(envp);
 	while (1)
 	{
 		g_stat = 0;
