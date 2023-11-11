@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/09 17:49:06 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:51:21 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ typedef struct s_token
 typedef struct s_ast_node
 {
 	t_ast_node_type		type;
+	int					subshell_flag;
 	char				*err_mss;
 	void				*node;
 	struct s_ast_node	*next;
@@ -142,11 +143,6 @@ typedef struct s_cmd
 	char	**args;
 }	t_cmd;
 
-typedef struct s_brace
-{
-	t_ast_node_type	type;
-}	t_brace;
-
 typedef struct s_env
 {
 	char			*var_name;
@@ -161,6 +157,7 @@ typedef struct s_shell
 	char		**env;
 	t_env		*env_lst;
 	char		*line;
+	t_token		*token_head;
 	t_ast_node	*tree;
 	int			ex_code;
 	int			err;

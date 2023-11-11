@@ -16,7 +16,8 @@ void	print_tok_lst(t_token *lst)
 {
 	while (lst)
 	{
-		printf ("token type: %d, token flag: %d, token input: %s\n", lst->type, lst->cmd->flag, lst->cmd->input);
+		printf ("token type: %d, token flag: %d, token input: %s\n", \
+		lst->type, lst->cmd->flag, lst->cmd->input);
 		lst = lst->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/09 17:51:12 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 16:53:39 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,12 @@ int	main(int argc, char **argv, char **envp)
 		if (g_stat < 0 || !(shell.line))
 			continue ;
 		tok_lst = input_scanner(shell.line);
-		// t_ast_node *node = parse_redir(&shell, &tok_lst);
-		// (void) node;
-		// line_parsing(&shell, &tok_lst);
+		shell.token_head = tok_lst;
 		if (g_stat < 0 || !(shell.line))
 			continue ;
 		shell_history(&shell, envp);
 		free(shell.line);
-		token_free(&tok_lst);
+		token_free(&shell.token_head);
 	}
 	return (0);
 }

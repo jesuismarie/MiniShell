@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 17:10:54 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/09/29 20:57:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:32:23 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_ast_node	*parsing_error(t_token **tok_lst)
 	t_ast_node	*node;
 	char		*str;
 
-	node = (t_ast_node *)malloc(sizeof(t_ast_node));
+	node = ft_calloc(sizeof(t_ast_node), 1);
 	error_exit(!node, "malloc", 12);
 	if (!(*tok_lst))
 		node->err_mss = ft_strdup(ERR_SYN_ERR);

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/09 16:55:12 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:22:10 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,11 @@ void		token_consume(t_token **scanner);
 t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst);
 void		node_push(t_ast_node **node_list, t_ast_node *to_push);
-t_ast_node	*parse_word(t_shell *shell, t_token **tok_lst);
+t_ast_node	*parse_filename(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst);
 int			parse_heredoc(t_shell *shell, t_ast_node *lim);
-
-
-
-
-t_token		*find_head(t_token *tok);
-t_ast_node	*tree_builder(t_shell *shell, t_token *tok_lst);
+// t_token		*find_head(t_token *tok);
+// t_ast_node	*tree_builder(t_shell *shell, t_token *tok_lst);
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------------ CD ------------------------------------*/
@@ -71,9 +67,14 @@ t_ast_node	*tree_builder(t_shell *shell, t_token *tok_lst);
 /*----------------------------------------------------------------------------*/
 /*----------------------------------- ENV ------------------------------------*/
 /*----------------------------------------------------------------------------*/
+char		*get_pid(void);
 char		*initialize_name(char **envp, int i, int j);
 char		*initialize_value(char **envp, int i, int j);
+int			add_hidden_values(t_env *head);
 t_env		*get_env(char **envp);
+char		*search_var(t_env *env, char *var_name);
+void		add_env_node(int hidden, char *var_name, char *var_val, t_env *env);
+void		del_env_node(char *var_name, t_env *env);
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------- EXIT -----------------------------------*/

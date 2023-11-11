@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:29:05 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/09/29 21:02:20 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:31:00 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_stack	*new_node(char c)
 {
 	t_stack	*node;
 
-	node = malloc(sizeof(t_stack));
+	node = ft_calloc(sizeof(t_stack), 1);
 	error_exit(!node, "malloc", 12);
 	node->c = c;
 	node->next = NULL;

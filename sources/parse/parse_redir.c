@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 19:19:52 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/06 18:34:22 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:30:46 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst)
 	node = ft_calloc(sizeof(t_ast_node), 1);
 	if (shell->err != 0)
 		return (node);
-	redir_node = malloc(sizeof(t_redir));
+	redir_node = ft_calloc(sizeof(t_redir), 1);
 	error_exit(!redir_node, "malloc", 12);
 	redir_node->type = (*tok_lst)->type;
 	*tok_lst = (*tok_lst)->next;
 	if (redir_filename(*tok_lst))
 		return (parsing_error(tok_lst));
 	node->type = AST_REDIRECTION;
-	redir_node->filename = parse_word(shell, tok_lst);
+	redir_node->filename = parse_filename(shell, tok_lst);
 	if (redir_node->type == HEREDOC)
 		redir_node->fd = parse_heredoc(shell, redir_node->filename);
 	return (node);
@@ -66,7 +66,7 @@ int	parse_heredoc(t_shell *shell, t_ast_node *lim)
 	return (here.in_fd);
 }
 
-t_ast_node	*parse_word(t_shell *shell, t_token **tok_lst)
+t_ast_node	*parse_filename(t_shell *shell, t_token **tok_lst)
 {
 	t_ast_node	*node;
 

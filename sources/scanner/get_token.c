@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 13:16:28 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/06 18:45:02 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:31:36 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@ t_token	*get_operator_token(char **s)
 
 	if (!s || !(*s))
 		return (NULL);
-	node = malloc(sizeof(t_token));
+	node = ft_calloc(sizeof(t_token), 1);
 	error_exit(!node, "malloc", 12);
-	node->cmd = malloc(sizeof(t_input));
+	node->cmd = ft_calloc(sizeof(t_input), 1);
 	error_exit(!node->cmd, "malloc", 12);
 	node->type = get_op_type(s);
 	operator_input(node);
@@ -35,7 +35,7 @@ t_token	*get_word_token(char **s)
 	t_input	*cur;
 	t_token	*node;
 
-	node = malloc(sizeof(t_token));
+	node = ft_calloc(sizeof(t_token), 1);
 	error_exit(!node, "malloc", 12);
 	cur = get_word(s);
 	if (cur->flag & F_DOLLAR || cur->flag & F_MUL_DOLLAR)

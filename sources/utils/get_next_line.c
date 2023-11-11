@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/01 14:51:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/09/02 14:36:24 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:33:41 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_join_free(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	str = ft_calloc(sizeof(char), ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!str)
 		return (0);
 	i = 0;
@@ -45,7 +45,7 @@ char	*ft_find(char *s)
 		return (0);
 	while (s[i] && s[i] != '\n')
 		i++;
-	str = (char *)malloc(sizeof(char) * (i + 2));
+	str = ft_calloc(sizeof(char), i + 2);
 	if (!str)
 		return (0);
 	i = -1;
@@ -76,7 +76,7 @@ char	*ft_remainder(char *s)
 		free(s);
 		return (0);
 	}
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s) - i));
+	str = ft_calloc(sizeof(char), ft_strlen(s) - i);
 	if (!str)
 		return (0);
 	j = 0;
@@ -92,7 +92,7 @@ char	*read_str(int fd, char *s)
 	char	*buf;
 	int		n;
 
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buf = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 	while (1)
 	{
 		n = read(fd, buf, BUFFER_SIZE);

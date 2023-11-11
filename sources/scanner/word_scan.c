@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 13:15:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/08 21:16:43 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/11 17:31:54 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_input	*get_word(char **s)
 	int		n;
 
 	n = 0;
-	cur = malloc(sizeof(t_input));
+	cur = ft_calloc(sizeof(t_input), 1);
 	error_exit(!cur, "malloc", 12);
 	while (*(*s + n) && *(*s + n) != '\t' \
 		&& *(*s + n) != ' ' && !ft_strchr(OPERATORS, *(*s + n)))
