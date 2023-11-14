@@ -24,7 +24,50 @@ MiniShell provides the following features:
 
 With these features, MiniShell offers a powerful and versatile command-line experience, enabling users to efficiently navigate the shell environment, execute commands with various options and conditions, and handle signals for interruption and termination. The support for wildcards, logical operators, and command grouping further enhances the flexibility and functionality of Minishell.
 
+## Compatibility
+
+MiniShell is compatible with:
+- MacOS
+- Linux
+
 ## Getting Started
+
+### For Linux
+
+1. Before running Minishell on Linux, ensure that you have the necessary dependencies installed. You may need to install the following packages:
+   ```bash
+   sudo apt-get update -y
+   sudo apt-get install build-essential -y
+   sudo apt-get install libreadline-dev -y
+   ```
+
+2. Clone the repository:
+
+   ```
+   git clone https://github.com/jesuismarie/minishell.git
+   ```
+
+3. Change into the project directory:
+
+   ```
+   cd minishell
+   ```
+
+4. Compile the program:
+
+   ```
+   make
+   ```
+
+5. Run MiniShell:
+
+   ```
+   ./minishell
+   ```
+
+6. You can now start executing commands and exploring the functionalities of Minishell.
+
+### For MacOS
 
 To get started with MiniShell, follow these steps:
 
@@ -40,26 +83,11 @@ To get started with MiniShell, follow these steps:
    cd minishell
    ```
 
-3. Configure Readline Library in MacOS
+3. Configure Readline Library
 
    ```
    make configure
    ```
-
-   If you are using a Debian-based Linux distribution, such as Ubuntu, and you don't have the Readline library installed, you can install it using the `apt` package manager. Follow these steps:
-
-   - a. Open a terminal window.
-
-   - b. Update the package repository to ensure you have the latest package information:
-	  ```
-      sudo apt update
-      ```
-
-   - c. Install the Readline library:
-
-      ```
-      sudo apt install libreadline-dev
-      ```
 
 4. Compile the program:
 
@@ -73,7 +101,7 @@ To get started with MiniShell, follow these steps:
    ./minishell
    ```
 
-5. You can now start executing commands and exploring the functionalities of Minishell.
+6. You can now start executing commands and exploring the functionalities of Minishell.
 
 ## Usage
 
