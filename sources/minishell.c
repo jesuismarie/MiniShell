@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 16:53:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:08:35 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 		check_open_close(shell.line);
 		if (g_stat < 0 || !(shell.line))
 			continue ;
-		tok_lst = input_scanner(shell.line);
+		tok_lst = input_scanner(&shell, shell.line);
 		shell.token_head = tok_lst;
 		if (g_stat < 0 || !(shell.line))
 			continue ;

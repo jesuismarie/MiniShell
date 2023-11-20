@@ -21,7 +21,7 @@ INCS			= -I./includes -I./Libft/includes -I./readline_ahovakim_mnazarya/include
 
 HEADER			= ./includes/minishell.h ./includes/define.h ./includes/get_next_line.h
 
-FLAGS			= -Wall -Wextra -Werror -fsanitize=address -g
+FLAGS			=# -Wall -Wextra -Werror -fsanitize=address -g
 
 LIB				= -LLibft -lft -Lreadline_ahovakim_mnazarya/lib -lreadline
 

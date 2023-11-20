@@ -22,7 +22,7 @@ void	print_tok_lst(t_token *lst)
 	}
 }
 
-t_token	*input_scanner(char *str)
+t_token	*input_scanner(t_shell *shell, char *str)
 {
 	t_token	*tok_lst;
 	t_token	*token;
@@ -34,6 +34,7 @@ t_token	*input_scanner(char *str)
 		token = get_token(&str);
 		token_add(&tok_lst, token);
 	}
+	shell->ex_code = token_analyser(shell, tok_lst);
 	print_tok_lst(tok_lst);
 	return (tok_lst);
 }

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 16:51:21 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/14 11:06:49 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,6 @@ typedef struct s_shell
 	char		**path;
 	int			history_fd;
 	char		*hist_path;
-	int			all_fds[OPEN_MAX];
+	int			all_fds[FOPEN_MAX];
 }	t_shell;
 #endif

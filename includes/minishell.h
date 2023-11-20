@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:22:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/18 20:28:41 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,6 @@ char		*expand_param(t_shell *shell, char *str);
 int			error(int cond, char *str, int ecode, t_shell *shell);
 void		error_exit(int cond, char *str, int ecode);
 t_ast_node	*parsing_error(t_token **tok_lst);
+int			set_status(t_shell *shell);
 
 #endif
