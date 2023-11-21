@@ -38,6 +38,18 @@ static void	print_quote_error(char *line, int *i, char quote)
 	}
 }
 
+void	clear_stack(t_stack **brace)
+{
+	t_stack *tmp;
+
+	while (*brace)
+	{
+		tmp = (*brace)->next;
+		free(*brace);
+		*brace = tmp;
+	}
+}
+
 void	check_open_close(char *line)
 {
 	int	i;

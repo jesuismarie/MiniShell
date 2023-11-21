@@ -44,11 +44,12 @@ int	main(int argc, char **argv, char **envp)
 			continue ;
 		tok_lst = input_scanner(&shell, shell.line);
 		shell.token_head = tok_lst;
+		token_free(&shell.token_head);
+		shell.ex_code = 0;
 		if (g_stat < 0 || !(shell.line))
 			continue ;
 		shell_history(&shell, envp);
 		free(shell.line);
-		token_free(&shell.token_head);
 	}
 	return (0);
 }

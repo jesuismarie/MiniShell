@@ -32,6 +32,7 @@ extern int	g_stat;
 void		quote_check(char *line, int *i);
 void		check_open_close(char *line);
 void		check_brace(char *line);
+void		clear_stack(t_stack **brace);
 void		operator_input(t_token *node);
 int			get_op_type(char **s);
 t_token		*get_operator_token(char **s);

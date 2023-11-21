@@ -61,6 +61,7 @@ static void	brace_validation(t_stack *brace)
 		ft_putstr_fd(ERR_MSG, 1);
 		ft_putendl_fd("(\'", 1);
 		g_stat = -1;
+		clear_stack(&brace);
 		return ;
 	}
 }
@@ -84,6 +85,7 @@ void	check_brace(char *line)
 				ft_putstr_fd(ERR_MSG, 1);
 				ft_putendl_fd(")\'", 1);
 				g_stat = -1;
+				clear_stack(&brace);
 				return ;
 			}
 			else
