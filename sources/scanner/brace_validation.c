@@ -58,8 +58,8 @@ static void	brace_validation(t_stack *brace)
 {
 	if (brace)
 	{
-		ft_putstr_fd(ERR_MSG, 2);
-		ft_putendl_fd("(\'", 2);
+		ft_putstr_fd(ERR_MSG, 1);
+		ft_putendl_fd("(\'", 1);
 		g_stat = -1;
 		return ;
 	}
@@ -81,8 +81,8 @@ void	check_brace(char *line)
 		{
 			if (!brace)
 			{
-				ft_putstr_fd(ERR_MSG, 2);
-				ft_putendl_fd(")\'", 2);
+				ft_putstr_fd(ERR_MSG, 1);
+				ft_putendl_fd(")\'", 1);
 				g_stat = -1;
 				return ;
 			}

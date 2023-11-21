@@ -37,10 +37,11 @@ int			get_op_type(char **s);
 t_token		*get_operator_token(char **s);
 t_input		*get_word(char **s);
 t_token		*get_word_token(char **s);
-t_token		*input_scanner(char *str);
+t_token		*input_scanner(t_shell *shell, char *str);
 t_token		*get_token(char **s);
 void		token_add(t_token **tok_lst, t_token *token);
 void		token_free(t_token **tok_lst);
+int			token_analyser(t_shell *shell, t_token *tok_lst);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- PARSER ----------------------------------*/

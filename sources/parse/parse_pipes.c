@@ -37,5 +37,5 @@ t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst)
 	if (shell->err != 0)
 		exit(1); //
 	node = parse_cmd(shell, tok_lst);
-	return (NULL);
+	return (node);
 }

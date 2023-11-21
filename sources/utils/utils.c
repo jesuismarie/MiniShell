@@ -21,8 +21,8 @@ int	set_status(t_shell *shell)
 	{
 		if (!ft_strcmp(tmp->var_name, "?"))
 		{
-			free(tmp->var_val);
-			tmp->var_val = ft_itoa(shell->ex_code);
+			free(tmp->var_value);
+			tmp->var_value = ft_itoa(shell->ex_code);
 			return (shell->ex_code);
 		}
 		tmp = tmp->next;

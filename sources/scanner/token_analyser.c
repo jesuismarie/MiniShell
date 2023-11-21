@@ -23,8 +23,8 @@ int	operator_analyser(t_token **tok_lst)
 		|| (*tok_lst)->next->type == AND_OP)))
 		{
 			ft_putstr_fd(ERR_MSG, 1);
-			ft_putstr_fd((*tok_lst)->next->cmd->input, 1);
-			ft_putstr_fd("'");
+			ft_putstr_fd((*tok_lst)->cmd->input, 1);
+			ft_putstr_fd("'\n", 1);
 			g_stat = -1;
 			return (2);
 		}
@@ -41,7 +41,7 @@ int	brace_analyser(t_token **tok_lst)
 		if ((*tok_lst)->next && (*tok_lst)->next->type != WORD)
 		{
 			ft_putstr_fd(ERR_MSG, 1);
-			ft_putendl_fd("(\'", 1);
+			ft_putendl_fd("(\'\n", 1);
 			g_stat = -1;
 			return (2);
 		}
@@ -59,7 +59,7 @@ int	redirections_analyser(t_token **tok_lst)
 		if (!(*tok_lst)->next)
 		{
 			ft_putstr_fd(ERR_MSG, 1);
-			ft_putendl_fd("newline'", 1);
+			ft_putendl_fd("newline'\n", 1);
 			g_stat = -1;
 			return (2);
 		}
@@ -68,12 +68,29 @@ int	redirections_analyser(t_token **tok_lst)
 		{
 			ft_putstr_fd(ERR_MSG, 1);
 			ft_putstr_fd((*tok_lst)->next->cmd->input, 1);
-			ft_putstr_fd("'");
+			ft_putstr_fd("'", 1);
 			g_stat = -1;
 			return (2);
 		}
 		else
-			tmp = tmp->next;
+			*tok_lst = (*tok_lst)->next;
+	}
+	return (0);
+}
+
+void	env_param_analizer(t_token **tok_lst)
+{
+	if ((*tok_lst)->type == ENV_PARAM)
+	{
+		if (!ft_strcmp((*tok_lst)->cmd->input, "$"))
+		{
+			(*tok_lst)->type = WORD;
+			(*tok_lst)->cmd->flag ^= F_DOLLAR;
+		}
+		// else if ((*tok_lst)->next->type != WORD || (*tok_lst)->next->type != ENV_PARAM)
+		// 	return(printf("need2change\n")); //"inch vor syntax error gci, to eta. es xosqi sra depqn a $<< $| $> i tak dalee"
+		// else
+		// 	*tok_lst = (*tok_lst)->next;
 	}
 }
 
@@ -85,23 +102,18 @@ int	token_analyser(t_shell *shell, t_token *tok_lst)
 	while (tmp)
 	{
 		shell->ex_code = operator_analyser(&tok_lst);
-		if (tmp->type == WORD && !shell->ex_code)
+		if (shell->ex_code)
+			return (set_status(shell));
+		if (tmp->type == WORD)
 			tmp = tmp->next;
 		shell->ex_code = brace_analyser(&tok_lst);
-		else if (tmp->type == BRACE_CLOSE && !shell->ex_code)
+		if (shell->ex_code)
+			return (set_status(shell));
+		if (tmp->type == BRACE_CLOSE)
 			tmp = tmp->next;
-		else if (tmp->type == ENV_PARAM && !shell->ex_code)
-		{
-			if (!tmp->next)
-				tmp->type = WORD;
-			else if (tmp->next->type != WORD || tmp->next->type != ENV_PARAM)
-				return(printf("need2change\n")); //"inch vor syntax error gci, to eta. es xosqi sra depqn a $<< $| $> i tak dalee"
-			else
-				tmp = tmp->next;
-		}
-		else if (!shell->ex_code)
+		env_param_analizer(&tok_lst);
+		if (!shell->ex_code)
 			tmp = tmp->next;
-		
 	}
 	return (set_status(shell));
 }
