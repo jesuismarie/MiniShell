@@ -121,7 +121,6 @@ void		eof_handler(t_shell *shell);
 char		*expand_param(t_shell *shell, char *str);
 int			error(int cond, char *str, int ecode, t_shell *shell);
 void		error_exit(int cond, char *str, int ecode);
-t_ast_node	*parsing_error(t_token **tok_lst);
 int			set_status(t_shell *shell);
 
 #endif

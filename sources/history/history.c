@@ -49,23 +49,24 @@ void	shell_history(t_shell *shell, char **envp)
 {	
 	static int	i = -1;
 	static char	*str;
+	char		*s;
 
 	if (++i == 0)
 	{
 		str = ft_strdup("");
 		shell->hist_path = ft_strjoin(find_home(envp), "/.minishell_history");
 	}
-	if (shell->line == NULL || ft_strcmp(shell->line, "") == 0)
-		return ;
+	s = ft_strtrim(shell->line, " ");
+	if (shell->line == NULL || ft_strcmp(shell->line, "") == 0 || !s[0])
+		return free(s);
+	free(s);
+	add_history(shell->line);
 	shell->history_fd = open(shell->hist_path, O_CREAT \
 	| O_WRONLY | O_APPEND, 0644);
 	if (shell->history_fd == -1 && error(1, "history", 9, shell))
 		return ;
 	if (ft_strcmp(shell->line, str) && shell->line[0] != ' ')
-	{
 		ft_putendl_fd(shell->line, shell->history_fd);
-		add_history(shell->line);
-	}
 	free(str);
 	str = ft_strdup(shell->line);
 	close(shell->history_fd);

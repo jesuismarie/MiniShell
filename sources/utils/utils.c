@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/18 18:28:19 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/23 02:13:28 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,10 @@
 
 int	set_status(t_shell *shell)
 {
-	t_env	*tmp;
+	char	*status;
 
-	tmp = shell->env_lst;
-	while (tmp)
-	{
-		if (!ft_strcmp(tmp->var_name, "?"))
-		{
-			free(tmp->var_value);
-			tmp->var_value = ft_itoa(shell->ex_code);
-			return (shell->ex_code);
-		}
-		tmp = tmp->next;
-	}
-	return (0);
+	status = ft_itoa(shell->ex_code);
+	add_env_node(1, "?", status, shell->env_lst);
+	free(status);
+	return (shell->ex_code);
 }

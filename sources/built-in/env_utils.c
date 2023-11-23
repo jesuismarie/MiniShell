@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:49:10 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:35:47 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/23 02:12:33 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	add_env_node(int hidden, char *var_name, char *var_val, t_env *env)
 	t_env	*tmp;
 
 	tmp = env;
-	while (tmp && tmp->next)
+	while (tmp)
 	{
 		if (tmp && !ft_strcmp(var_name, tmp->var_name))
 		{
@@ -42,6 +42,8 @@ void	add_env_node(int hidden, char *var_name, char *var_val, t_env *env)
 			tmp->var_value = ft_strdup(var_val);
 			return ;
 		}
+		if (!tmp->next)
+			break ;
 		tmp = tmp->next;
 	}
 	tmp->next = ft_calloc(sizeof(t_env), 1);

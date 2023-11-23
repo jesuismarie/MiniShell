@@ -12,14 +12,6 @@
 
 #include <minishell.h>
 
-static int	redir_filename(t_token *tok_lst)
-{
-	if (!tok_lst && tok_lst->type != WORD && \
-		tok_lst->type != BRACE_OPEN && tok_lst->type != ENV_PARAM)
-		return (1);
-	return (0);
-}
-
 t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst)
 {
 	t_ast_node	*node;
@@ -32,8 +24,6 @@ t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst)
 	error_exit(!redir_node, "malloc", 12);
 	redir_node->type = (*tok_lst)->type;
 	*tok_lst = (*tok_lst)->next;
-	if (redir_filename(*tok_lst))
-		return (parsing_error(tok_lst));
 	node->type = AST_REDIRECTION;
 	redir_node->filename = parse_filename(shell, tok_lst);
 	if (redir_node->type == HEREDOC)
@@ -73,8 +63,6 @@ t_ast_node	*parse_filename(t_shell *shell, t_token **tok_lst)
 	node = NULL;
 	if (shell->err != 0)
 		return (node);
-	if (redir_filename(*tok_lst))
-		return (parsing_error(tok_lst));
 	node = new_word_node(tok_lst);
 	if (*tok_lst && (*tok_lst)->next)
 		*tok_lst = (*tok_lst)->next;
