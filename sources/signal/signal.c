@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 09:57:01 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/09/28 20:33:07 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/26 07:06:09 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	sig_init(t_shell *shell)
 	sa.sa_handler = handle_signal;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = SA_RESTART;
+	if (g_stat == SIGINT)
+		shell->ex_code = 128 + g_stat;
 	if (error(sigaction(SIGINT, &sa, NULL) == -1, \
 	"Sigaction error ❌", 128 + SIGINT, shell))
 		return ;

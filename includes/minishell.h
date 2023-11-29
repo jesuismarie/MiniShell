@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/18 20:28:41 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/28 14:35:42 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ extern int	g_stat;
 /*----------------------------- LEXICAL ANALIZER -----------------------------*/
 /*----------------------------------------------------------------------------*/
 void		quote_check(char *line, int *i);
-void		check_open_close(char *line);
-void		check_brace(char *line);
+void		check_open_close(t_shell *shell);
+void		check_brace(t_shell *shell);
 void		clear_stack(t_stack **brace);
 void		operator_input(t_token *node);
 int			get_op_type(char **s);
@@ -42,6 +42,10 @@ t_token		*input_scanner(t_shell *shell, char *str);
 t_token		*get_token(char **s);
 void		token_add(t_token **tok_lst, t_token *token);
 void		token_free(t_token **tok_lst);
+int			operator_analyser(t_shell *shell, t_token **lst);
+int			brace_analyser(t_shell *shell, t_token **lst);
+int			redirections_analyser(t_shell *shell, t_token **lst);
+void		env_param_analizer(t_token **lst);
 int			token_analyser(t_shell *shell, t_token *tok_lst);
 
 /*----------------------------------------------------------------------------*/
@@ -52,11 +56,9 @@ void		token_consume(t_token **scanner);
 t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst);
 void		node_push(t_ast_node **node_list, t_ast_node *to_push);
-t_ast_node	*parse_filename(t_shell *shell, t_token **tok_lst);
+t_ast_node	*parse_filename(t_token **tok_lst);
 t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst);
 int			parse_heredoc(t_shell *shell, t_ast_node *lim);
-// t_token		*find_head(t_token *tok);
-// t_ast_node	*tree_builder(t_shell *shell, t_token *tok_lst);
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------------ CD ------------------------------------*/
@@ -72,11 +74,14 @@ int			parse_heredoc(t_shell *shell, t_ast_node *lim);
 char		*get_pid(void);
 char		*initialize_name(char **envp, int i, int j);
 char		*initialize_value(char **envp, int i, int j);
-int			add_hidden_values(t_env *head);
-t_env		*get_env(char **envp);
+int			add_hidden_values(t_shell *shell);
+void		get_env(t_shell *shell, char **envp);
 char		*search_var(t_env *env, char *var_name);
-void		add_env_node(int hidden, char *var_name, char *var_val, t_env *env);
-void		del_env_node(char *var_name, t_env *env);
+void		add_env_node(int hidden, char *name, char *value, t_shell *shell);
+void		del_env_node(char *var_name, t_shell *shell);
+int			env_lenght(t_shell *shell);
+char		**env_vars(t_shell *shell);
+void		init_env(t_shell *shell);
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------- EXIT -----------------------------------*/
@@ -97,7 +102,7 @@ void		del_env_node(char *var_name, t_env *env);
 /*----------------------------------------------------------------------------*/
 /*--------------------------------- HISTORY ----------------------------------*/
 /*----------------------------------------------------------------------------*/
-void		shell_history(t_shell *shell, char **envp);
+void		shell_history(t_shell *shell);
 void		print_history(t_shell *shell);
 
 /*----------------------------------------------------------------------------*/
@@ -107,6 +112,7 @@ void		print_history(t_shell *shell);
 /*----------------------------------------------------------------------------*/
 /*------------------------------- REDIRECTION --------------------------------*/
 /*----------------------------------------------------------------------------*/
+void		fake_heredoc(t_shell *shell, t_token *lim);
 void		heredoc(t_shell *shell, t_ast_node *lim, t_pipe	here);
 
 /*----------------------------------------------------------------------------*/
@@ -121,6 +127,9 @@ void		eof_handler(t_shell *shell);
 char		*expand_param(t_shell *shell, char *str);
 int			error(int cond, char *str, int ecode, t_shell *shell);
 void		error_exit(int cond, char *str, int ecode);
+void		set_err(t_shell *shell, char *str);
+char		*join_with_symbol(char *s1, char *s2, char c);
+void		search_heredoc(t_shell *shell, t_token *lst);
 int			set_status(t_shell *shell);
 
 #endif

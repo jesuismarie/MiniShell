@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/11 16:49:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:30:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:49:39 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*initialize_value(char **envp, int i, int j)
 	int		k;
 
 	k = 0;
-	res = ft_calloc(sizeof(char), strlen(envp[i]) - j + 1);
+	res = ft_calloc(sizeof(char), ft_strlen(envp[i]) - j + 1);
 	while (envp[i][++j])
 	{
 		res[k] = envp[i][j];
@@ -55,17 +55,16 @@ static t_env	*get_env_list(t_env *cur)
 	return (cur->next);
 }
 
-t_env	*get_env(char **envp)
+void	get_env(t_shell *shell, char **envp)
 {
-	t_env	*head;
 	t_env	*cur;
 	int		i;
 	int		j;
 
 	i = -1;
-	head = ft_calloc(sizeof(t_env), 1);
-	error_exit(!head, "malloc", 12);
-	cur = head;
+	shell->env_lst = ft_calloc(sizeof(t_env), 1);
+	error_exit(!shell->env_lst, "malloc", 12);
+	cur = shell->env_lst;
 	while (envp[++i])
 	{
 		j = -1;
@@ -81,5 +80,29 @@ t_env	*get_env(char **envp)
 		if (envp[i + 1])
 			cur = get_env_list(cur);
 	}
-	return (add_hidden_values(head), head);
+	add_hidden_values(shell);
+}
+
+char	**env_vars(t_shell *shell)
+{
+	int		i;
+	t_env	*tmp;
+	int		count;
+	char	**env;
+
+	i = 0;
+	tmp = shell->env_lst;
+	count = env_lenght(shell);
+	env = malloc(sizeof(char *) * (count + 1));
+	while (tmp)
+	{
+		if (tmp->hidden == 0)
+		{
+			env[i] = join_with_symbol(tmp->var_name, tmp->var_value, '=');
+			i++;
+		}
+		tmp = tmp->next;
+	}
+	env[i] = 0;
+	return (env);
 }

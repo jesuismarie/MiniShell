@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/23 19:06:24 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:10:27 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/24 07:23:46 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst)
 {
 	t_ast_node	*node;
 
-	if (shell->err != 0)
-		exit(1); //
 	node = parse_cmd(shell, tok_lst);
 	return (node);
 }

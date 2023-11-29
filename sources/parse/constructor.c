@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 22:10:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:30:30 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/26 07:05:49 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,5 @@ t_ast_node	*new_word_node(t_token **tok_lst)
 	node->node = word;
 	node->next = NULL;
 	node->prev = NULL;
-	node->err_mss = NULL;
 	return (node);
 }

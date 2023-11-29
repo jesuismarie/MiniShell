@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:29:05 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:31:00 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/29 01:37:21 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,44 +54,42 @@ static void	stack_pop(t_stack **brace)
 	tmp = NULL;
 }
 
-static void	brace_validation(t_stack *brace)
+static void	brace_validation(t_shell *shell, t_stack *brace)
 {
 	if (brace)
 	{
-		ft_putstr_fd(ERR_MSG, 1);
-		ft_putendl_fd("(\'", 1);
-		g_stat = -1;
+		set_err(shell, ERR_OP_B);
+		g_stat = -2;
 		clear_stack(&brace);
 		return ;
 	}
 }
 
-void	check_brace(char *line)
+void	check_brace(t_shell *shell)
 {
 	t_stack	*brace;
 	int		i;
 
 	i = 0;
 	brace = NULL;
-	while (line[i])
+	while (shell->line[i])
 	{
-		quote_check(line, &i);
-		if (line[i] == '(')
-			stack_push(&brace, line[i]);
-		else if (line[i] == ')')
+		quote_check(shell->line, &i);
+		if (shell->line[i] && shell->line[i] == '(')
+			stack_push(&brace, shell->line[i]);
+		else if (shell->line[i] && shell->line[i] == ')')
 		{
 			if (!brace)
 			{
-				ft_putstr_fd(ERR_MSG, 1);
-				ft_putendl_fd(")\'", 1);
-				g_stat = -1;
-				clear_stack(&brace);
-				return ;
+				shell->err = 1;
+				g_stat = -2;
+				return set_err(shell, ERR_CL_B), clear_stack(&brace);
 			}
 			else
 				stack_pop(&brace);
 		}
-		i++;
+		if (shell->line[i])
+			i++;
 	}
-	brace_validation(brace);
+	brace_validation(shell, brace);
 }

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:53:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/09 16:16:14 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/28 13:23:08 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,31 @@ static void	here_signal(void)
 	sa.sa_handler = &here_sig_handler;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	fake_heredoc(t_shell *shell, t_token *lim)
+{
+	char	*line;
+	t_input	*word;
+	int		pid;
+
+	pid = fork();
+	if (error(pid < 0, PERROR_MSG, 1, shell))
+		return ;
+	if (pid == 0)
+	{
+		here_signal();
+		word = lim->cmd;
+		while (1)
+		{
+			line = readline("heredoc> ");
+			if (!line || (word && word->input && !ft_strcmp(line, word->input)))
+				break ;
+			free(line);
+		}
+		exit(0);
+	}
+	waitpid(pid, &(shell->ex_code), 0);
 }
 
 void	heredoc(t_shell *shell, t_ast_node *lim, t_pipe	here)

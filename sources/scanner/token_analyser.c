@@ -6,84 +6,94 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:06:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/23 07:16:44 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/29 21:13:56 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	operator_analyser(t_token **lst)
+int	operator_analyser(t_shell *shell, t_token **lst)
 {
+	char	*msg;
+
 	if (!(*lst)->prev)
 	{
-		ft_putstr_fd(ERR_MSG, 1);
-		ft_putstr_fd((*lst)->cmd->input, 1);
-		ft_putendl_fd("'", 1);
-		g_stat = -1;
-		return (2);
+		msg = ft_strjoin(ERR_MSG, (*lst)->cmd->input);
+		msg = ft_join_free(msg, "'\n");
+		g_stat = -2;
+		return (set_err(shell, msg), free(msg), 2);
 	}
 	else if (!(*lst)->next || ((*lst)->next && ((*lst)->next->type == PIPE_OP \
 	|| (*lst)->next->type == OR_OP || (*lst)->next->type == AND_OP)))
 	{
-		ft_putstr_fd(ERR_MSG, 1);
 		if ((*lst)->next)
-			ft_putstr_fd((*lst)->next->cmd->input, 1);
+			msg = ft_strjoin(ERR_MSG, (*lst)->next->cmd->input);
 		else
-			ft_putstr_fd((*lst)->cmd->input, 1);
-		ft_putendl_fd("'", 1);
-		g_stat = -1;
-		return (2);
+			msg = ft_strjoin(ERR_MSG, (*lst)->cmd->input);
+		msg = ft_join_free(msg, "\'\n");
+		g_stat = -2;
+		return (set_err(shell, msg), free(msg), 2);
 	}
 	else
 		*lst = (*lst)->next;
 	return (0);
 }
 
-int	brace_analyser(t_token **lst)
+static char	*set_brace_err(t_token **lst)
 {
+	char	*msg;
+
+	msg = ft_strjoin(ERR_MSG, (*lst)->next->cmd->input);
+	msg = ft_join_free(msg, "\'\n");
+	g_stat = -2;
+	return (msg);
+}
+
+int	brace_analyser(t_shell *shell, t_token **lst)
+{
+	char	*msg;
+
 	if ((*lst)->next && ((*lst)->next->type == HEREDOC \
-	|| (*lst)->next->type == APPEND \
-	|| (*lst)->next->type == FILE_IN || (*lst)->next->type == FILE_OUT))
+	|| (*lst)->next->type == APPEND || (*lst)->next->type == FILE_IN \
+	|| (*lst)->next->type == FILE_OUT))
 	{
 		if ((*lst)->next->next->type != WORD \
 		&& (*lst)->next->next->type != ENV_PARAM)
 		{
-			ft_putstr_fd(ERR_MSG, 1);
-			g_stat = -1;
-			return (ft_putendl_fd(")\'", 1), 2);
+			g_stat = -2;
+			return (set_err(shell, ERR_CL_B), 2);
 		}
 		else
 			*lst = (*lst)->next;
 	}
-	if ((*lst)->next && ((*lst)->next->type == PIPE_OP \
-	|| (*lst)->next->type == OR_OP || (*lst)->next->type == AND_OP))
+	else if ((*lst)->next && ((*lst)->next->type == BRACE_CLOSE \
+	|| (*lst)->next->type == PIPE_OP || (*lst)->next->type == OR_OP \
+	|| (*lst)->next->type == AND_OP))
 	{
-		ft_putstr_fd(ERR_MSG, 1);
-		g_stat = -1;
-		return (ft_putendl_fd("(\'", 1), 2);
+		msg = set_brace_err(lst);
+		return (set_err(shell, msg), free(msg), 2);
 	}
 	else
 		*lst = (*lst)->next;
 	return (0);
 }
 
-int	redirections_analyser(t_token **lst)
+int	redirections_analyser(t_shell *shell, t_token **lst)
 {
+	char	*msg;
+
 	if (!(*lst)->next)
 	{
-		ft_putstr_fd(ERR_MSG, 1);
-		ft_putendl_fd("newline'", 1);
-		g_stat = -1;
-		return (2);
+		g_stat = -3;
+		return (set_err(shell, ERR_NL), 2);
 	}
 	else if ((*lst)->next && ((*lst)->next->type != ENV_PARAM \
 	&& (*lst)->next->type != WORD))
 	{
-		ft_putstr_fd(ERR_MSG, 1);
-		ft_putstr_fd((*lst)->next->cmd->input, 1);
-		ft_putendl_fd("'", 1);
-		g_stat = -1;
-		return (2);
+		msg = ft_strjoin(ERR_MSG, (*lst)->next->cmd->input);
+		msg = ft_join_free(msg, "\'\n");
+		g_stat = -3;
+		return (set_err(shell, msg), free(msg), 2);
 	}
 	else
 		*lst = (*lst)->next;
@@ -98,30 +108,4 @@ void	env_param_analizer(t_token **lst)
 		(*lst)->cmd->flag ^= F_DOLLAR;
 	}
 	*lst = (*lst)->next;
-}
-
-int	token_analyser(t_shell *shell, t_token *tok_lst)
-{
-	t_token	*tmp;
-
-	tmp = tok_lst;
-	while (tmp && !shell->ex_code)
-	{
-		if (tmp->type == PIPE_OP || tmp->type == OR_OP || tmp->type == AND_OP)
-			shell->ex_code = operator_analyser(&tmp);
-		else if (tmp->type == WORD)
-			tmp = tmp->next;
-		else if (tmp->type == BRACE_OPEN)
-			shell->ex_code = brace_analyser(&tmp);
-		else if (tmp->type == HEREDOC || tmp->type == APPEND \
-		|| tmp->type == FILE_IN || tmp->type == FILE_OUT)
-			shell->ex_code = redirections_analyser(&tmp);
-		else if (tmp->type == BRACE_CLOSE)
-			tmp = tmp->next;
-		else if (tmp->type == ENV_PARAM)
-			env_param_analizer(&tmp);
-		else
-			tmp = tmp->next;
-	}
-	return (set_status(shell));
 }

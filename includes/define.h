@@ -6,38 +6,41 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/14 11:06:49 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:55:38 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEFINE_H
 # define DEFINE_H
 
-# define ERR_CD			"minishell: cd: HOME not set 🏠\n"
+# define ERR_CD		"minishell: cd: HOME not set 🏠\n"
 # define ERR_CD_2MUCH	"minishell: cd: too many arguments\n"
-# define ERR_EXIT		"minishell: exit: too many arguments\n"
-# define ERR_HIST		"minishell: history: too many arguments\n"
-# define ERR_EXPORT		"minishell: export:"
-# define ERR_UNSET		"minishell: unset:"
-# define ERR_MSG		"minishell: syntax error near unexpected token `"
-# define ERR_EOF		"minishell: unexpected EOF while looking for matching `"
+# define ERR_EXIT	"minishell: exit: too many arguments\n"
+# define ERR_HIST	"minishell: history: too many arguments\n"
+# define ERR_EXPORT	"minishell: export:"
+# define ERR_UNSET	"minishell: unset:"
+# define ERR_MSG	"minishell: syntax error near unexpected token `"
+# define ERR_OP_B	"minishell: syntax error near unexpected token `('\n"
+# define ERR_CL_B	"minishell: syntax error near unexpected token `)'\n"
+# define ERR_NL		"minishell: syntax error near unexpected token `newline'\n"
+# define ERR_EOF	"minishell: unexpected EOF while looking for matching `"
 # define ERR_SYN_ERR	"minishell: syntax error: unexpected end of file\n"
-# define PERROR_MSG		"minishell"
+# define PERROR_MSG	"minishell"
 # define HERE_MAX_ERR	"minishell: maximum here-document count exceeded\n"
 # define SQUOTES_ERR	"minishell: unclosed \' quote 😇\n"
 # define DQUOTES_ERR	"minishell: unclosed \" quote 😇\n"
 
-# define EQUAL		'='
-# define OR_IF		"||"
-# define AND_IF		"&&"
-# define LESS		'<'
-# define GREAT		'>'
-# define DLESS		"<<"
-# define DGREAT		">>"
-# define DOLLAR		'$'
-# define PIPE		'|'
-# define LBRACE		'('
-# define RBRACE		')'
+# define EQUAL	'='
+# define OR_IF	"||"
+# define AND_IF	"&&"
+# define LESS	'<'
+# define GREAT	'>'
+# define DLESS	"<<"
+# define DGREAT	">>"
+# define DOLLAR	'$'
+# define PIPE	'|'
+# define LBRACE	'('
+# define RBRACE	')'
 # define SQUOTES	'\''
 # define DQUOTES	'\"'
 # define EXIT_CODE	'?'
@@ -109,7 +112,6 @@ typedef struct s_ast_node
 {
 	t_ast_node_type		type;
 	int					subshell_flag;
-	char				*err_mss;
 	void				*node;
 	struct s_ast_node	*next;
 	struct s_ast_node	*prev;
@@ -158,12 +160,13 @@ typedef struct s_shell
 	t_env		*env_lst;
 	char		*line;
 	t_token		*token_head;
+	char		*err_msg;
+	int			err;
 	t_ast_node	*tree;
 	int			ex_code;
-	int			err;
 	char		**path;
 	int			history_fd;
-	char		*hist_path;
+	char		*hist;
 	int			all_fds[FOPEN_MAX];
 }	t_shell;
 #endif
