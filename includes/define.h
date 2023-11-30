@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/29 20:55:38 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:13:56 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ typedef struct s_input
 
 typedef struct s_token
 {
+	int				err;
 	t_token_type	type;
 	t_input			*cmd;
 	struct s_token	*prev;
@@ -167,6 +168,6 @@ typedef struct s_shell
 	char		**path;
 	int			history_fd;
 	char		*hist;
-	int			all_fds[FOPEN_MAX];
+	int			all_fds[OPEN_MAX];
 }	t_shell;
 #endif

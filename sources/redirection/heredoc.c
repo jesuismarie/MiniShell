@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:53:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/28 13:23:08 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:47:13 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@ void	fake_heredoc(t_shell *shell, t_token *lim)
 		{
 			line = readline("heredoc> ");
 			if (!line || (word && word->input && !ft_strcmp(line, word->input)))
+			{
+				if (line)
+					free (line);
 				break ;
+			}
 			free(line);
 		}
 		exit(0);

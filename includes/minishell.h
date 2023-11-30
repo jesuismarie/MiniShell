@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/28 14:35:42 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:26:56 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ extern int	g_stat;
 /*----------------------------------------------------------------------------*/
 void		quote_check(char *line, int *i);
 void		check_open_close(t_shell *shell);
-void		check_brace(t_shell *shell);
+void		check_brace(t_shell *shell, t_token **tok_lst);
 void		clear_stack(t_stack **brace);
 void		operator_input(t_token *node);
 int			get_op_type(char **s);
 t_token		*get_operator_token(char **s);
 t_input		*get_word(char **s);
 t_token		*get_word_token(char **s);
-t_token		*input_scanner(t_shell *shell, char *str);
+t_token		*input_scanner(char *str);
 t_token		*get_token(char **s);
 void		token_add(t_token **tok_lst, t_token *token);
 void		token_free(t_token **tok_lst);
@@ -65,7 +65,7 @@ int			parse_heredoc(t_shell *shell, t_ast_node *lim);
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/*----------------------------------- ECHO- ----------------------------------*/
+/*----------------------------------- ECHO -----------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -128,6 +128,7 @@ char		*expand_param(t_shell *shell, char *str);
 int			error(int cond, char *str, int ecode, t_shell *shell);
 void		error_exit(int cond, char *str, int ecode);
 void		set_err(t_shell *shell, char *str);
+void		set_error_stat(int stat, t_token **lst);
 char		*join_with_symbol(char *s1, char *s2, char c);
 void		search_heredoc(t_shell *shell, t_token *lst);
 int			set_status(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 17:10:54 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/11 17:32:23 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:29:08 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,12 @@ void	error_exit(int cond, char *str, int ecode)
 		perror(str);
 		exit(ecode);
 	}
+}
+
+void	set_error_stat(int stat, t_token **lst)
+{
+	g_stat = stat;
+	(*lst)->err = 1;
 }
 
 // t_ast_node	*parsing_error(t_token **tok_lst)

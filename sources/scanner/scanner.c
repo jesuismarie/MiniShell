@@ -12,17 +12,7 @@
 
 #include <minishell.h>
 
-void	print_tok_lst(t_token *lst)
-{
-	while (lst)
-	{
-		printf ("token type: %d, token flag: %d, token input: %s\n", \
-		lst->type, lst->cmd->flag, lst->cmd->input);
-		lst = lst->next;
-	}
-}
-
-t_token	*input_scanner(t_shell *shell, char *str)
+t_token	*input_scanner(char *str)
 {
 	t_token	*tok_lst;
 	t_token	*token;
@@ -34,8 +24,6 @@ t_token	*input_scanner(t_shell *shell, char *str)
 		token = get_token(&str);
 		token_add(&tok_lst, token);
 	}
-	shell->ex_code = token_analyser(shell, tok_lst);
-	print_tok_lst(tok_lst);
 	return (tok_lst);
 }
 
@@ -58,7 +46,7 @@ int	token_analyser(t_shell *shell, t_token *tok_lst)
 	t_token	*tmp;
 
 	tmp = tok_lst;
-	while (tmp && !shell->ex_code)
+	while (tmp && !tmp->err && !shell->ex_code)
 	{
 		if (tmp->type == PIPE_OP || tmp->type == OR_OP || tmp->type == AND_OP)
 			shell->ex_code = operator_analyser(shell, &tmp);
@@ -76,8 +64,8 @@ int	token_analyser(t_shell *shell, t_token *tok_lst)
 		else
 			tmp = tmp->next;
 	}
-	tmp = tok_lst;
-	if (g_stat == -2)
-		search_heredoc(shell, tmp);
+	// tmp = tok_lst;
+	// if (g_stat == -2)
+	// 	search_heredoc(shell, tmp);
 	return (set_status(shell));
 }

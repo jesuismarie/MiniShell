@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:29:05 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/29 01:37:21 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:03:16 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,42 +54,52 @@ static void	stack_pop(t_stack **brace)
 	tmp = NULL;
 }
 
-static void	brace_validation(t_shell *shell, t_stack *brace)
+static void	brace_validation(t_shell *shell, t_stack *brace, t_token **tok_lst)
 {
+	t_token	*t;
+
 	if (brace)
 	{
-		set_err(shell, ERR_OP_B);
+		t = *tok_lst;
+		while (t)
+		{
+			if (t->type == BRACE_OPEN)
+			{
+				t->err = 1;
+				break ;
+			}
+			t = t->next;
+		}
 		g_stat = -2;
-		clear_stack(&brace);
-		return ;
+		return (set_err(shell, ERR_OP_B), clear_stack(&brace));
 	}
 }
 
-void	check_brace(t_shell *shell)
+void	check_brace(t_shell *shell, t_token **tok_lst)
 {
 	t_stack	*brace;
+	t_token	*tmp;
 	int		i;
 
 	i = 0;
+	tmp = *tok_lst;
 	brace = NULL;
-	while (shell->line[i])
+	while (tmp)
 	{
-		quote_check(shell->line, &i);
-		if (shell->line[i] && shell->line[i] == '(')
-			stack_push(&brace, shell->line[i]);
-		else if (shell->line[i] && shell->line[i] == ')')
+		if (tmp && tmp->type == BRACE_OPEN)
+			stack_push(&brace, LBRACE);
+		else if (tmp && tmp->type == BRACE_CLOSE)
 		{
 			if (!brace)
 			{
-				shell->err = 1;
+				tmp->err = 1;
 				g_stat = -2;
-				return set_err(shell, ERR_CL_B), clear_stack(&brace);
+				return (set_err(shell, ERR_CL_B), clear_stack(&brace));
 			}
 			else
 				stack_pop(&brace);
 		}
-		if (shell->line[i])
-			i++;
+		tmp = tmp->next;
 	}
-	brace_validation(shell, brace);
+	brace_validation(shell, brace, tok_lst);
 }

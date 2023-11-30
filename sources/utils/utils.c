@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/29 21:29:17 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:51:30 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,11 @@ void	search_heredoc(t_shell *shell, t_token *tok_lst)
 
 	tmp = tok_lst;
 	shell->ex_code = 0;
-	while (tmp && !shell->ex_code)
+	while (tmp && tmp->err != 1)
 	{
-		if (tmp->type == PIPE_OP || tmp->type == OR_OP || tmp->type == AND_OP)
-			shell->ex_code = operator_analyser(shell, &tmp);
-		else if (tmp->type == WORD)
-			tmp = tmp->next;
-		else if (tmp->type == BRACE_OPEN)
-			shell->ex_code = brace_analyser(shell, &tmp);
-		else if (tmp->type == HEREDOC || tmp->type == APPEND \
-		|| tmp->type == FILE_IN || tmp->type == FILE_OUT)
-			shell->ex_code = redirections_analyser(shell, &tmp);
-		else if (tmp->type == BRACE_CLOSE)
-			tmp = tmp->next;
-		else if (tmp->type == ENV_PARAM)
-			env_param_analizer(&tmp);
-		else
-			tmp = tmp->next;
-		if (tmp->prev->type == HEREDOC && shell->ex_code == 0)
-			fake_heredoc(shell, tmp);
+		if (tmp->type == HEREDOC)
+			fake_heredoc(shell, tmp->next);
+		tmp = tmp->next;
 	}
 }
 

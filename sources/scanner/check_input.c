@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 16:48:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/29 06:25:59 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:05:46 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void	print_quote_error(t_shell *shell, int *i, char quote)
 
 void	clear_stack(t_stack **brace)
 {
-	t_stack *tmp;
+	t_stack	*tmp;
 
 	while (*brace)
 	{
@@ -61,10 +61,9 @@ void	check_open_close(t_shell *shell)
 			print_quote_error(shell, &i, SQUOTES);
 		else if (shell->line[i] == DQUOTES)
 			print_quote_error(shell, &i, DQUOTES);
-		else
+		if (shell->line[i])
 			i++;
 		if (g_stat == -1)
 			return ;
 	}
-	check_brace(shell);
 }

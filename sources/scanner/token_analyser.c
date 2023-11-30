@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:06:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/29 21:13:56 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/11/30 17:32:26 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,19 @@ int	operator_analyser(t_shell *shell, t_token **lst)
 	{
 		msg = ft_strjoin(ERR_MSG, (*lst)->cmd->input);
 		msg = ft_join_free(msg, "'\n");
-		g_stat = -2;
+		set_error_stat(-2, lst);
 		return (set_err(shell, msg), free(msg), 2);
 	}
 	else if (!(*lst)->next || ((*lst)->next && ((*lst)->next->type == PIPE_OP \
-	|| (*lst)->next->type == OR_OP || (*lst)->next->type == AND_OP)))
+	|| (*lst)->next->type == OR_OP || (*lst)->next->type == AND_OP \
+	|| (*lst)->next->type == BRACE_CLOSE)))
 	{
 		if ((*lst)->next)
 			msg = ft_strjoin(ERR_MSG, (*lst)->next->cmd->input);
 		else
 			msg = ft_strjoin(ERR_MSG, (*lst)->cmd->input);
 		msg = ft_join_free(msg, "\'\n");
-		g_stat = -2;
+		set_error_stat(-2, lst);
 		return (set_err(shell, msg), free(msg), 2);
 	}
 	else
@@ -45,7 +46,7 @@ static char	*set_brace_err(t_token **lst)
 
 	msg = ft_strjoin(ERR_MSG, (*lst)->next->cmd->input);
 	msg = ft_join_free(msg, "\'\n");
-	g_stat = -2;
+	set_error_stat(-2, lst);
 	return (msg);
 }
 
@@ -60,7 +61,7 @@ int	brace_analyser(t_shell *shell, t_token **lst)
 		if ((*lst)->next->next->type != WORD \
 		&& (*lst)->next->next->type != ENV_PARAM)
 		{
-			g_stat = -2;
+			set_error_stat(-2, lst);
 			return (set_err(shell, ERR_CL_B), 2);
 		}
 		else
@@ -84,7 +85,7 @@ int	redirections_analyser(t_shell *shell, t_token **lst)
 
 	if (!(*lst)->next)
 	{
-		g_stat = -3;
+		set_error_stat(-3, lst);
 		return (set_err(shell, ERR_NL), 2);
 	}
 	else if ((*lst)->next && ((*lst)->next->type != ENV_PARAM \
@@ -92,7 +93,7 @@ int	redirections_analyser(t_shell *shell, t_token **lst)
 	{
 		msg = ft_strjoin(ERR_MSG, (*lst)->next->cmd->input);
 		msg = ft_join_free(msg, "\'\n");
-		g_stat = -3;
+		set_error_stat(-3, lst);
 		return (set_err(shell, msg), free(msg), 2);
 	}
 	else
