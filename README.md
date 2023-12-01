@@ -27,6 +27,7 @@ With these features, MiniShell offers a powerful and versatile command-line expe
 ## Compatibility
 
 MiniShell is compatible with:
+
 - MacOS
 - Linux
 
@@ -35,6 +36,7 @@ MiniShell is compatible with:
 ### For Linux
 
 1. Before running Minishell on Linux, ensure that you have the necessary dependencies installed. You may need to install the following packages:
+
    ```bash
    sudo apt-get update -y
    sudo apt-get install build-essential -y
@@ -43,25 +45,25 @@ MiniShell is compatible with:
 
 2. Clone the repository:
 
-   ```
+   ```bash
    git clone https://github.com/jesuismarie/minishell.git
    ```
 
 3. Change into the project directory:
 
-   ```
+   ```bash
    cd minishell
    ```
 
 4. Compile the program:
 
-   ```
+   ```bash
    make
    ```
 
 5. Run MiniShell:
 
-   ```
+   ```bash
    ./minishell
    ```
 
@@ -73,31 +75,31 @@ To get started with MiniShell, follow these steps:
 
 1. Clone the repository:
 
-   ```
+   ```bash
    git clone https://github.com/jesuismarie/minishell.git
    ```
 
 2. Change into the project directory:
 
-   ```
+   ```bash
    cd minishell
    ```
 
 3. Configure Readline Library
 
-   ```
+   ```bash
    make configure
    ```
 
 4. Compile the program:
 
-   ```
+   ```bash
    make
    ```
 
 5. Run MiniShell:
 
-   ```
+   ```bash
    ./minishell
    ```
 
@@ -108,13 +110,15 @@ To get started with MiniShell, follow these steps:
 Minishell provides a command-line interface where you can type commands and execute them. Here are some examples:
 
 - Execute a built-in command:
-  ```
+
+  ```bash
   $ echo Hello, MiniShell!
   Hello, MiniShell!
   ```
 
 - Execute an external command:
-  ```
+
+  ```bash
   $ ls -l
   total 12
   -rw-r--r-- 1 user group   78 Jul  1 15:23 README.md
@@ -122,34 +126,40 @@ Minishell provides a command-line interface where you can type commands and exec
   ```
 
 - Change directory:
-  ```
+
+  ```bash
   $ cd /path/to/directory
   ```
 
 - Set an environment variable:
-  ```
+
+  ```bash
   $ export MY_VARIABLE=value
   ```
 
 - Redirect input/output:
-  ```
+
+  ```bash
   $ cat input.txt > output.txt
   ```
 
 - Pipe commands:
-  ```
+
+  ```bash
   $ ls -l | grep ".txt"
   ```
 
 - Display environment variables:
-  ```
+
+  ```bash
   $ env
   PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
   HOME=/Users/user
   ```
 
 - Exit MiniShell:
-  ```
+
+  ```bash
   $ exit
   ```
 
@@ -176,48 +186,10 @@ MiniShell has the following dependencies:
 - C compiler (e.g., CC)
 - Make
 
-## Contribution
+## Contributing
 
-Contributions to the MiniShell project are welcome! If you find any bugs, have suggestions for improvements, or would like to add new features, follow the steps below to contribute:
+We'd love to have you contribute! Please refer to our [contribution guidelines](./CONTRIBUTING.md) for details.
 
-1. Fork the repository to your GitHub account.
+## License
 
-2. Clone the forked repository to your local machine:
-
-   ```
-   git clone https://github.com/jesuismarie/minishell.git
-   ```
-
-3. Create a new branch to work on your changes:
-
-   ```
-   git checkout -b my-feature
-   ```
-
-4. Make the necessary modifications, improvements, or bug fixes to the codebase.
-
-5. Test your changes thoroughly to ensure they work as expected.
-
-6. Commit your changes with descriptive commit messages:
-
-   ```
-   git commit -m "Add feature: description of your changes"
-   ```
-
-7. Push your branch to your forked repository:
-
-   ```
-   git push origin my-feature
-   ```
-
-8. Go to the original repository on GitHub and create a new pull request. Provide a clear and detailed description of your changes, explaining the purpose and impact of your contribution.
-
-9. Wait for the project maintainers to review your pull request. They may provide feedback or ask for additional changes.
-
-10. Collaborate with the maintainers to address any feedback and make the necessary updates to your pull request.
-
-By contributing to MiniShell, you not only improve the project but also gain valuable experience in software development and collaboration. Thank you for your contributions!
-
-Please note that all contributions are subject to the project's code of conduct. Be respectful and considerate in all interactions and discussions.
-
-
+[**Apache 2.0 License**](./LICENSE)
