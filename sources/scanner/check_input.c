@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 16:48:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/30 17:05:46 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/04 18:48:04 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,27 @@ void	check_open_close(t_shell *shell)
 			i++;
 		if (g_stat == -1)
 			return ;
+	}
+}
+
+void	check_here_count(t_shell *shell)
+{
+	int		count;
+	t_token	*tmp;
+
+	count = 0;
+	tmp = shell->token_head;
+	while (tmp)
+	{
+		if (tmp->type == HEREDOC)
+			count++;
+		tmp = tmp->next;
+	}
+	if (count > 16)
+	{
+		g_stat = -2;
+		set_err(shell, HERE_MAX_ERR);
+		shell->ex_code = 2;
+		set_status(shell);
 	}
 }

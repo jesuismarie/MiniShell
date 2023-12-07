@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/03 12:09:53 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/26 07:18:21 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/07 21:19:35 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static char	*find_home(t_env *envp)
 
 void	shell_history(t_shell *shell)
 {
-	static	int		i = -1;
-	static	char	*str;
+	static int		i = -1;
+	static char		*str;
 
 	if (++i == 0)
 	{

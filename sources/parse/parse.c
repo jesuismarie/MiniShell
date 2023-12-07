@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 21:28:10 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/10 22:26:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/07 20:47:54 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,8 @@ t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst)
 	t_ast_node	*tree;
 
 	tree = NULL;
-	(void)shell;
 	if (!tok_lst)
 		return (NULL);
 	tree = parse_pipeline(shell, tok_lst);
-	return (tree);
+	return (parse_logic_op(shell, tree, tok_lst));
 }

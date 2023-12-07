@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/30 17:26:56 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/07 20:47:22 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ extern int	g_stat;
 void		quote_check(char *line, int *i);
 void		check_open_close(t_shell *shell);
 void		check_brace(t_shell *shell, t_token **tok_lst);
+void		check_here_count(t_shell *shell);
 void		clear_stack(t_stack **brace);
 void		operator_input(t_token *node);
 int			get_op_type(char **s);
@@ -45,8 +46,8 @@ void		token_free(t_token **tok_lst);
 int			operator_analyser(t_shell *shell, t_token **lst);
 int			brace_analyser(t_shell *shell, t_token **lst);
 int			redirections_analyser(t_shell *shell, t_token **lst);
-void		env_param_analizer(t_token **lst);
-int			token_analyser(t_shell *shell, t_token *tok_lst);
+int			env_param_analizer(t_shell *shell, t_token **lst);
+int			token_analyser(t_shell *shell, t_token *tok);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- PARSER ----------------------------------*/
@@ -55,6 +56,7 @@ t_ast_node	*new_word_node(t_token **tok_lst);
 void		token_consume(t_token **scanner);
 t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst);
+t_ast_node	*parse_logic_op(t_shell *shell, t_ast_node *left, t_token **scan);
 void		node_push(t_ast_node **node_list, t_ast_node *to_push);
 t_ast_node	*parse_filename(t_token **tok_lst);
 t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst);

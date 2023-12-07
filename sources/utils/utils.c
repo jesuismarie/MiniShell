@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/30 17:51:30 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/07 20:51:07 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ void	search_heredoc(t_shell *shell, t_token *tok_lst)
 	t_token	*tmp;
 
 	tmp = tok_lst;
-	shell->ex_code = 0;
-	while (tmp && tmp->err != 1)
+	while (tmp && tmp->type != ERROR)
 	{
 		if (tmp->type == HEREDOC)
 			fake_heredoc(shell, tmp->next);

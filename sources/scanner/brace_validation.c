@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:29:05 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/30 17:03:16 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/04 13:47:49 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	brace_validation(t_shell *shell, t_stack *brace, t_token **tok_lst)
 		{
 			if (t->type == BRACE_OPEN)
 			{
-				t->err = 1;
+				t->type = ERROR;
 				break ;
 			}
 			t = t->next;
@@ -79,9 +79,7 @@ void	check_brace(t_shell *shell, t_token **tok_lst)
 {
 	t_stack	*brace;
 	t_token	*tmp;
-	int		i;
 
-	i = 0;
 	tmp = *tok_lst;
 	brace = NULL;
 	while (tmp)
@@ -92,7 +90,7 @@ void	check_brace(t_shell *shell, t_token **tok_lst)
 		{
 			if (!brace)
 			{
-				tmp->err = 1;
+				tmp->type = ERROR;
 				g_stat = -2;
 				return (set_err(shell, ERR_CL_B), clear_stack(&brace));
 			}

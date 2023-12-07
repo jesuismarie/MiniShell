@@ -41,12 +41,19 @@ void	token_free(t_token **tok_lst)
 	}
 }
 
+static int	error_analyser(t_shell *shell)
+{
+	set_err(shell, ERR_AND);
+	g_stat = -2;
+	return (2);
+}
+
 int	token_analyser(t_shell *shell, t_token *tok_lst)
 {
 	t_token	*tmp;
 
 	tmp = tok_lst;
-	while (tmp && !tmp->err && !shell->ex_code)
+	while (tmp && tmp->type != ERROR && !shell->ex_code)
 	{
 		if (tmp->type == PIPE_OP || tmp->type == OR_OP || tmp->type == AND_OP)
 			shell->ex_code = operator_analyser(shell, &tmp);
@@ -60,12 +67,11 @@ int	token_analyser(t_shell *shell, t_token *tok_lst)
 		else if (tmp->type == BRACE_CLOSE)
 			tmp = tmp->next;
 		else if (tmp->type == ENV_PARAM)
-			env_param_analizer(&tmp);
+			shell->ex_code = env_param_analizer(shell, &tmp);
 		else
 			tmp = tmp->next;
 	}
-	// tmp = tok_lst;
-	// if (g_stat == -2)
-	// 	search_heredoc(shell, tmp);
+	if (tmp && tmp->type == ERROR)
+		shell->ex_code = error_analyser(shell);
 	return (set_status(shell));
 }

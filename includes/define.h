@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/30 15:13:56 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:40:06 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # define ERR_MSG	"minishell: syntax error near unexpected token `"
 # define ERR_OP_B	"minishell: syntax error near unexpected token `('\n"
 # define ERR_CL_B	"minishell: syntax error near unexpected token `)'\n"
+# define ERR_AND	"minishell: syntax error near unexpected token `&'\n"
 # define ERR_NL		"minishell: syntax error near unexpected token `newline'\n"
 # define ERR_EOF	"minishell: unexpected EOF while looking for matching `"
 # define ERR_SYN_ERR	"minishell: syntax error: unexpected end of file\n"
@@ -77,7 +78,8 @@ typedef enum e_flags
 	F_MUL_DOLLAR		= 1 << 6
 }	t_flags;
 
-typedef enum e_ast_node_type {
+typedef enum e_ast_node_type
+{
 	AST_COMMAND,
 	AST_WORD,
 	AST_PIPE,
@@ -102,7 +104,6 @@ typedef struct s_input
 
 typedef struct s_token
 {
-	int				err;
 	t_token_type	type;
 	t_input			*cmd;
 	struct s_token	*prev;
@@ -170,4 +171,5 @@ typedef struct s_shell
 	char		*hist;
 	int			all_fds[OPEN_MAX];
 }	t_shell;
+
 #endif
