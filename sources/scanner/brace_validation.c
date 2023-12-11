@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:29:05 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/04 13:47:49 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/11 08:42:37 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	check_brace(t_shell *shell, t_token **tok_lst)
 			{
 				tmp->type = ERROR;
 				g_stat = -2;
-				return (set_err(shell, ERR_CL_B), clear_stack(&brace));
+				return (set_err(shell, ERR_CL_B));
 			}
 			else
 				stack_pop(&brace);

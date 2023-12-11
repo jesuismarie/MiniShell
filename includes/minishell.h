@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/07 20:47:22 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/11 09:18:29 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ int			token_analyser(t_shell *shell, t_token *tok);
 /*---------------------------------- PARSER ----------------------------------*/
 /*----------------------------------------------------------------------------*/
 t_ast_node	*new_word_node(t_token **tok_lst);
-void		token_consume(t_token **scanner);
 t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_logic_op(t_shell *shell, t_ast_node *left, t_token **scan);
-void		node_push(t_ast_node **node_list, t_ast_node *to_push);
+t_ast_node	*parse_pipe(t_shell *shell, t_ast_node *left, t_token **tok_lst);
+t_ast_node	*parse_cmd(t_shell *shell, t_token **tok_lst);
+t_ast_node	*parse_subshell(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_filename(t_token **tok_lst);
 t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst);
 int			parse_heredoc(t_shell *shell, t_ast_node *lim);
