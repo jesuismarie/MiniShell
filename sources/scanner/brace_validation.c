@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/23 17:29:05 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/09/29 21:02:20 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/11 08:42:37 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_stack	*new_node(char c)
 {
 	t_stack	*node;
 
-	node = malloc(sizeof(t_stack));
+	node = ft_calloc(sizeof(t_stack), 1);
 	error_exit(!node, "malloc", 12);
 	node->c = c;
 	node->next = NULL;
@@ -54,42 +54,50 @@ static void	stack_pop(t_stack **brace)
 	tmp = NULL;
 }
 
-static void	brace_validation(t_stack *brace)
+static void	brace_validation(t_shell *shell, t_stack *brace, t_token **tok_lst)
 {
+	t_token	*t;
+
 	if (brace)
 	{
-		ft_putstr_fd(ERR_MSG, 2);
-		ft_putendl_fd("(\'", 2);
-		g_stat = -1;
-		return ;
+		t = *tok_lst;
+		while (t)
+		{
+			if (t->type == BRACE_OPEN)
+			{
+				t->type = ERROR;
+				break ;
+			}
+			t = t->next;
+		}
+		g_stat = -2;
+		return (set_err(shell, ERR_OP_B), clear_stack(&brace));
 	}
 }
 
-void	check_brace(char *line)
+void	check_brace(t_shell *shell, t_token **tok_lst)
 {
 	t_stack	*brace;
-	int		i;
+	t_token	*tmp;
 
-	i = 0;
+	tmp = *tok_lst;
 	brace = NULL;
-	while (line[i])
+	while (tmp)
 	{
-		quote_check(line, &i);
-		if (line[i] == '(')
-			stack_push(&brace, line[i]);
-		else if (line[i] == ')')
+		if (tmp && tmp->type == BRACE_OPEN)
+			stack_push(&brace, LBRACE);
+		else if (tmp && tmp->type == BRACE_CLOSE)
 		{
 			if (!brace)
 			{
-				ft_putstr_fd(ERR_MSG, 2);
-				ft_putendl_fd(")\'", 2);
-				g_stat = -1;
-				return ;
+				tmp->type = ERROR;
+				g_stat = -2;
+				return (set_err(shell, ERR_CL_B));
 			}
 			else
 				stack_pop(&brace);
 		}
-		i++;
+		tmp = tmp->next;
 	}
-	brace_validation(brace);
+	brace_validation(shell, brace, tok_lst);
 }

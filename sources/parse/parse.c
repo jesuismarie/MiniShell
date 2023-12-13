@@ -1,41 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/11 17:10:54 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/04 15:01:09 by mnazarya         ###   ########.fr       */
+/*   Created: 2023/09/08 21:28:10 by mnazarya          #+#    #+#             */
+/*   Updated: 2023/12/09 04:25:32 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-int	error(int cond, char *str, int ecode, t_shell *shell)
+t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst)
 {
-	if (cond)
-	{
-		perror(str);
-		shell->ex_code = ecode;
-		set_status(shell);
-		g_stat = -1;
-		return (1);
-	}
-	return (0);
-}
+	t_ast_node	*tree;
 
-void	error_exit(int cond, char *str, int ecode)
-{
-	if (cond)
-	{
-		perror(str);
-		exit(ecode);
-	}
-}
-
-void	set_error_stat(int stat, t_token **lst)
-{
-	g_stat = stat;
-	(*lst)->type = ERROR;
+	tree = NULL;
+	if (!tok_lst)
+		return (NULL);
+	tree = parse_pipeline(shell, tok_lst);
+	return (parse_logic_op(shell, tree, tok_lst));
 }

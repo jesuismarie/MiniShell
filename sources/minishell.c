@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 14:39:35 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/06 18:34:17 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:11:11 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,43 +14,75 @@
 
 int	g_stat = 0;
 
-static void	minishell_init(int argc, char **argv, char **envp)
+static void	minishell_init(int argc, char **argv, char **envp, t_shell *shell)
 {
 	(void)argv;
-	(void)envp;
 	if (argc != 1)
 		exit(0);
-	printf("\033[34m       _     _     _       _ _ \n\033[0m");
-	printf("\033[34m _____|_|___|_|___| |_ ___| | |\n\033[0m");
-	printf("\033[34m|     | |   | |_ -|   | -_| | |\n\033[0m");
-	printf("\033[34m|_|_|_|_|_|_|_|___|_|_|___|_|_|\n\033[0m");
-	printf("\033\n[34m Authors: mnazarya, ahovakim\n\n\033[0m");
+	shell->env = NULL;
+	get_env(shell, envp);
+	printf("\033[1;34m       _     _     _       _ _ \n\033[0m");
+	printf("\033[1;34m _____|_|___|_|___| |_ ___| | |\n\033[0m");
+	printf("\033[1;34m|     | |   | |_ -|   | -_| | |\n\033[0m");
+	printf("\033[1;34m|_|_|_|_|_|_|_|___|_|_|___|_|_|\n\033[0m");
+	printf("\n\033[1;34m Authors: mnazarya, ahovakim\n\n\033[0m");
+}
+
+static	void	prompt_init(t_shell *shell)
+{
+	g_stat = 0;
+	shell->ex_code = 0;
+	shell->err = 0;
+	shell->err_msg = ft_strdup("");
+	sig_init(shell);
+	shell->line = readline(PS);
+	set_status(shell);
+	eof_handler(shell);
+}
+
+void	print_tok_lst(t_token *lst)
+{
+	while (lst)
+	{
+		printf ("token type: %d, token flag: %d, token input: %s\n", \
+		lst->type, lst->cmd->flag, lst->cmd->input);
+		lst = lst->next;
+	}
+}
+
+void	prompt_validation(t_shell *shell)
+{
+	shell->token_head = input_scanner(shell->line);
+	check_brace(shell, &(shell->token_head));
+	shell->ex_code = token_analyser(shell, shell->token_head);
+	check_open_close(shell);
+	if (g_stat < 0)
+		search_heredoc(shell, shell->token_head);
+	print_tok_lst(shell->token_head);
+	check_here_count(shell);
+	shell_history(shell);
+	token_free(&(shell->token_head));
+	free(shell->line);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
-	t_token	*tok_lst;
 
-	minishell_init(argc, argv, envp);
+	minishell_init(argc, argv, envp, &shell);
 	while (1)
 	{
-		g_stat = 0;
-		sig_init(&shell);
-		shell.line = readline(PS);
-		eof_handler(&shell);
-		check_open_close(shell.line);
-		if (g_stat < 0 || !(shell.line))
+		prompt_init(&shell);
+		if (!shell.line)
 			continue ;
-		tok_lst = input_scanner(shell.line);
-		// t_ast_node *node = parse_redir(&shell, &tok_lst);
-		// (void) node;
-		// line_parsing(&shell, &tok_lst);
-		if (g_stat < 0 || !(shell.line))
+		prompt_validation(&shell);
+		if (g_stat < 0)
+		{
+			ft_putendl_fd(shell.err_msg, 2);
+			free(shell.err_msg);
 			continue ;
-		shell_history(&shell, envp);
-		free(shell.line);
-		token_free(&tok_lst);
+		}
+		free(shell.err_msg);
 	}
 	return (0);
 }

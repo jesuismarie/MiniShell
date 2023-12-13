@@ -62,14 +62,17 @@ lib:
 			@make -C Libft
 
 clean:
-			@echo "${BLUE} Removing $(BUILD)${RESET}"
+			@echo "${BLUE} Removing MiniShell $(BUILD)${RESET}"
 			@make clean -C Libft
 			@rm -rf $(BUILD)
 
-fclean:		clean
+fclean:
+			@echo "${BLUE} Removing MiniShell $(BUILD)${RESET}"
 			@echo "${BLUE} Removing ${NAME}${RESET}"
 			@make fclean -C Libft
+			@rm -rf $(BUILD)
 			@rm -f ${NAME}
+			@echo "${YELLOW} Everything is cleared ✅${RESET}"
 
 re:			fclean all
 

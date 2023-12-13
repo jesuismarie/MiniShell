@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/12 18:45:45 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/08 21:17:49 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/04 12:38:23 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	operator_input(t_token *node)
 		node->cmd->input = ft_strdup("(");
 	else if (node->type == BRACE_CLOSE)
 		node->cmd->input = ft_strdup(")");
-	else if (node->type == WORD)
+	else if (node->type == ERROR)
 		node->cmd->input = ft_strdup("&");
 }
 
@@ -86,5 +86,5 @@ int	get_op_type(char **s)
 		return (check_redir(s, HEREDOC, LESS));
 	else if (**s == GREAT)
 		return (check_redir(s, APPEND, GREAT));
-	return (WORD);
+	return (ERROR);
 }

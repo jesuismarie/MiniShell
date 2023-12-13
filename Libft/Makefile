@@ -39,11 +39,13 @@ $(BUILD):
 		@mkdir -p $(BUILD)
 
 clean:
-		@echo "${BLUE} Removing $(BUILD) ${RESET}"
+		@echo "${BLUE} Removing Libft $(BUILD) ${RESET}"
 		@rm -rf $(BUILD)
 
-fclean:			clean
+fclean:
+		@echo "${BLUE} Removing Libft $(BUILD) ${RESET}"
 		@echo "${BLUE} Removing ${NAME} ${RESET}"
+		@rm -rf $(BUILD)
 		@$(RM) $(NAME)
 
 re: 			fclean all

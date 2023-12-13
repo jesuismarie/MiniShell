@@ -12,15 +12,6 @@
 
 #include <minishell.h>
 
-void	print_tok_lst(t_token *lst)
-{
-	while (lst)
-	{
-		printf ("token type: %d, token flag: %d, token input: %s\n", lst->type, lst->cmd->flag, lst->cmd->input);
-		lst = lst->next;
-	}
-}
-
 t_token	*input_scanner(char *str)
 {
 	t_token	*tok_lst;
@@ -33,7 +24,6 @@ t_token	*input_scanner(char *str)
 		token = get_token(&str);
 		token_add(&tok_lst, token);
 	}
-	print_tok_lst(tok_lst);
 	return (tok_lst);
 }
 
@@ -49,4 +39,39 @@ void	token_free(t_token **tok_lst)
 		free(*tok_lst);
 		*tok_lst = tmp;
 	}
+}
+
+static int	error_analyser(t_shell *shell)
+{
+	set_err(shell, ERR_AND);
+	g_stat = -2;
+	return (2);
+}
+
+int	token_analyser(t_shell *shell, t_token *tok_lst)
+{
+	t_token	*tmp;
+
+	tmp = tok_lst;
+	while (tmp && tmp->type != ERROR && !shell->ex_code)
+	{
+		if (tmp->type == PIPE_OP || tmp->type == OR_OP || tmp->type == AND_OP)
+			shell->ex_code = operator_analyser(shell, &tmp);
+		else if (tmp->type == WORD)
+			tmp = tmp->next;
+		else if (tmp->type == BRACE_OPEN)
+			shell->ex_code = brace_analyser(shell, &tmp);
+		else if (tmp->type == HEREDOC || tmp->type == APPEND \
+		|| tmp->type == FILE_IN || tmp->type == FILE_OUT)
+			shell->ex_code = redirections_analyser(shell, &tmp);
+		else if (tmp->type == BRACE_CLOSE)
+			tmp = tmp->next;
+		else if (tmp->type == ENV_PARAM)
+			shell->ex_code = env_param_analizer(shell, &tmp);
+		else
+			tmp = tmp->next;
+	}
+	if (tmp && tmp->type == ERROR)
+		shell->ex_code = error_analyser(shell);
+	return (set_status(shell));
 }
