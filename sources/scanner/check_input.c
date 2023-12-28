@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/11 16:48:22 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/04 18:48:04 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/23 01:47:47 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ static void	print_quote_error(t_shell *shell, int *i, char quote)
 	if (shell->line && !shell->line[*i])
 	{
 		if (quote == SQUOTES)
-			set_err(shell, SQUOTES_ERR);
+			set_err(shell, SQ_ERR);
 		else
-			set_err(shell, DQUOTES_ERR);
+			set_err(shell, DQ_ERR);
 		g_stat = -2;
 	}
 }
@@ -84,7 +84,7 @@ void	check_here_count(t_shell *shell)
 	if (count > 16)
 	{
 		g_stat = -2;
-		set_err(shell, HERE_MAX_ERR);
+		set_err(shell, HERE_MAX);
 		shell->ex_code = 2;
 		set_status(shell);
 	}

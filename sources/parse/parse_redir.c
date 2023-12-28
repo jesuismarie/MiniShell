@@ -6,30 +6,57 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/21 19:19:52 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/11/24 07:24:59 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/26 14:38:55 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <minishell.h>
 
-t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst)
+static t_redir	*parse_helper(t_shell *shell, t_token **tok_lst)
 {
-	t_ast_node	*node;
-	t_redir		*redir_node;
+	t_redir	*redir_lst;
+	t_redir	*tmp;
 
-	node = ft_calloc(sizeof(t_ast_node), 1);
-	redir_node = ft_calloc(sizeof(t_redir), 1);
-	error_exit(!redir_node, "malloc", 12);
-	redir_node->type = (*tok_lst)->type;
-	*tok_lst = (*tok_lst)->next;
-	node->type = AST_REDIRECTION;
-	redir_node->filename = parse_filename(tok_lst);
-	if (redir_node->type == HEREDOC)
-		redir_node->fd = parse_heredoc(shell, redir_node->filename);
-	return (node);
+	redir_lst = NULL;
+	while ((*tok_lst) && ((*tok_lst)->type == HEREDOC \
+	|| (*tok_lst)->type == APPEND || (*tok_lst)->type == FILE_IN \
+	|| (*tok_lst)->type == FILE_OUT))
+	{
+		if (redir_lst)
+		{
+			redir_lst->next = new_redir_node(shell, tok_lst);
+			redir_lst->next->next = NULL;
+			redir_lst = redir_lst->next;
+		}
+		else
+		{
+			redir_lst = new_redir_node(shell, tok_lst);
+			redir_lst->next = NULL;
+			tmp = redir_lst;
+		}
+	}
+	return (tmp);
 }
 
-int	parse_heredoc(t_shell *shell, t_ast_node *lim)
+t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst)
+{
+	t_ast_node	*redir;
+
+	redir = NULL;
+	if ((*tok_lst) && ((*tok_lst)->type == HEREDOC \
+	|| (*tok_lst)->type == APPEND || (*tok_lst)->type == FILE_IN \
+	|| (*tok_lst)->type == FILE_OUT))
+	{
+		redir = ft_calloc(sizeof(t_ast_node), 1);
+		error_exit(!redir, "malloc", 12);
+		redir->type = AST_REDIRECTION;
+		redir->node = (void *)parse_helper(shell, tok_lst);
+		redir->subshell_flag = 0;
+	}
+	return (redir);
+}
+
+int	parse_heredoc(t_shell *shell, t_input *lim)
 {
 	t_pipe	here;
 	int		fds[2];
@@ -52,15 +79,4 @@ int	parse_heredoc(t_shell *shell, t_ast_node *lim)
 		here.in_fd = -1;
 	}
 	return (here.in_fd);
-}
-
-t_ast_node	*parse_filename(t_token **tok_lst)
-{
-	t_ast_node	*node;
-
-	node = NULL;
-	node = new_word_node(tok_lst);
-	if (*tok_lst && (*tok_lst)->next)
-		*tok_lst = (*tok_lst)->next;
-	return (node);
 }

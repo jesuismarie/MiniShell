@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/03 15:59:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/07 17:40:06 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/26 06:31:47 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define DEFINE_H
 
 # define ERR_CD		"minishell: cd: HOME not set 🏠\n"
-# define ERR_CD_2MUCH	"minishell: cd: too many arguments\n"
+# define CD_2MUCH	"minishell: cd: too many arguments\n"
 # define ERR_EXIT	"minishell: exit: too many arguments\n"
 # define ERR_HIST	"minishell: history: too many arguments\n"
 # define ERR_EXPORT	"minishell: export:"
@@ -25,11 +25,11 @@
 # define ERR_AND	"minishell: syntax error near unexpected token `&'\n"
 # define ERR_NL		"minishell: syntax error near unexpected token `newline'\n"
 # define ERR_EOF	"minishell: unexpected EOF while looking for matching `"
-# define ERR_SYN_ERR	"minishell: syntax error: unexpected end of file\n"
+# define ERR_SYN	"minishell: syntax error: unexpected end of file\n"
 # define PERROR_MSG	"minishell"
-# define HERE_MAX_ERR	"minishell: maximum here-document count exceeded\n"
-# define SQUOTES_ERR	"minishell: unclosed \' quote 😇\n"
-# define DQUOTES_ERR	"minishell: unclosed \" quote 😇\n"
+# define HERE_MAX	"minishell: maximum here-document count exceeded\n"
+# define SQ_ERR		"minishell: unclosed \' quote 😇\n"
+# define DQ_ERR		"minishell: unclosed \" quote 😇\n"
 
 # define EQUAL	'='
 # define OR_IF	"||"
@@ -80,13 +80,10 @@ typedef enum e_flags
 
 typedef enum e_ast_node_type
 {
-	AST_COMMAND,
-	AST_WORD,
-	AST_PIPE,
 	AST_LOGICAL_OP,
 	AST_REDIRECTION,
-	AST_PARENTHESES,
-	AST_ERROR
+	AST_PIPE,
+	AST_COMMAND
 }	t_ast_node_type;
 
 typedef struct s_stack
@@ -116,7 +113,6 @@ typedef struct s_ast_node
 	int					subshell_flag;
 	void				*node;
 	struct s_ast_node	*next;
-	struct s_ast_node	*prev;
 }	t_ast_node;
 
 typedef struct s_pipe
@@ -131,7 +127,8 @@ typedef struct s_redir
 {
 	int				fd;
 	t_token_type	type;
-	t_ast_node		*filename;
+	struct s_redir	*next;
+	t_input			*filename;
 }	t_redir;
 
 typedef struct s_operator
@@ -143,8 +140,9 @@ typedef struct s_operator
 
 typedef struct s_cmd
 {
-	char	*name;
-	char	**args;
+	int		n;
+	t_input	*name;
+	t_input	**args;
 }	t_cmd;
 
 typedef struct s_env
@@ -169,7 +167,7 @@ typedef struct s_shell
 	char		**path;
 	int			history_fd;
 	char		*hist;
-	int			all_fds[OPEN_MAX];
+	int			all_fds[FOPEN_MAX];
 }	t_shell;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 11:06:04 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/07 13:33:39 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/28 06:29:52 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,12 @@ int	redirections_analyser(t_shell *shell, t_token **lst)
 		msg = ft_join_free(msg, "\'\n");
 		set_error_stat(-3, lst);
 		return (set_err(shell, msg), free(msg), 2);
+	}
+	else if ((*lst)->next->next && (*lst)->next->next->type == BRACE_OPEN)
+	{
+		set_error_stat(-2, &(*lst)->next->next);
+		set_err(shell, ERR_OP_B);
+		return (2);
 	}
 	else
 		*lst = (*lst)->next;

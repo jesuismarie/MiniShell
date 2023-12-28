@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 12:33:25 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/08 07:39:57 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/24 14:50:41 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ t_ast_node	*parse_logic_op(t_shell *shell, t_ast_node *left, t_token **tok_lst)
 		op_node = ft_calloc(sizeof(t_operator), 1);
 		error_exit(!op_node, "malloc", 12);
 		node->type = AST_LOGICAL_OP;
-		op_node->left = left;
-		op_node->right = parse_pipeline(shell, tok_lst);
 		op_node->type = (*tok_lst)->type;
+		op_node->left = left;
+		*tok_lst = (*tok_lst)->next;
+		op_node->right = parse_pipeline(shell, tok_lst);
 		node->node = (void *)op_node;
-		node->subshell_flag = 0;
 		node->next = NULL;
-		node->prev = NULL;
+		node->subshell_flag = 0;
 		return (parse_logic_op(shell, node, tok_lst));
 	}
 	return (left);
