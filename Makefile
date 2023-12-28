@@ -4,7 +4,7 @@ BUILD			= ./build
 
 SRC				= ./sources
 
-DIRS			= built-in history pipe parse \
+DIRS			= built-in history parse \
 				redirection signal scanner utils
 
 SRCSDIRS		= $(foreach dir, $(DIRS), $(addprefix $(SRC)/, $(dir))) $(SRC)
@@ -35,7 +35,6 @@ RESET			= \033[0m
 BLUE			= \033[34m
 YELLOW			= \033[38;2;255;239;0m
 APPLE_GREEN		= \033[38;2;141;182;0m
-
 
 $(BUILD)/%.o:	$(SRC)/*/%.c $(HEADER) Makefile
 			@echo "${APPLE_GREEN} Compiling $<${RESET}"
