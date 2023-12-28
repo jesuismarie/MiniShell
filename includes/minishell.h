@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 15:46:27 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/11 09:40:10 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/28 09:50:25 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@
 # include <readline/readline.h>
 
 extern int	g_stat;
+
+
+/*----------------------------------PRINT-------------------------------------*/
+void		print_tok_lst(t_token *lst);
+void		print_ast(t_ast_node *node, int n);
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------- LEXICAL ANALIZER -----------------------------*/
@@ -52,17 +57,20 @@ int			token_analyser(t_shell *shell, t_token *tok);
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- PARSER ----------------------------------*/
 /*----------------------------------------------------------------------------*/
-t_ast_node	*new_word_node(t_token **tok_lst);
+t_input		*new_word_node(t_token **tok_lst);
+t_redir		*new_redir_node(t_shell *shell, t_token **tok_lst);
+t_ast_node	*new_cmd_node(t_shell *shell, t_cmd *cmd, t_token **tok_lst);
 t_ast_node	*line_parsing(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_pipeline(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_logic_op(t_shell *shell, t_ast_node *left, t_token **scan);
 t_ast_node	*parse_pipe(t_shell *shell, t_ast_node *left, t_token **tok_lst);
-t_ast_node	*parse_cmd(t_shell *shell, t_token **tok_lst);
+t_ast_node	*parse_cmd_line(t_shell *shell, t_token **tok_lst);
 t_ast_node	*parse_subshell(t_shell *shell, t_token **tok_lst);
-t_ast_node	*parse_filename(t_token **tok_lst);
 t_ast_node	*parse_redir(t_shell *shell, t_token **tok_lst);
-int			parse_heredoc(t_shell *shell, t_ast_node *lim);
-
+t_input		*parse_filename(t_token **tok_lst);
+t_ast_node	*parse_simple_cmd(t_shell *shell, t_token **tok_lst);
+int			parse_heredoc(t_shell *shell, t_input *lim);
+void		free_ast(t_ast_node **node);
 
 /*----------------------------------------------------------------------------*/
 /*------------------------------------ CD ------------------------------------*/
@@ -117,7 +125,7 @@ void		print_history(t_shell *shell);
 /*------------------------------- REDIRECTION --------------------------------*/
 /*----------------------------------------------------------------------------*/
 void		fake_heredoc(t_shell *shell, t_token *lim);
-void		heredoc(t_shell *shell, t_ast_node *lim, t_pipe	here);
+void		heredoc(t_shell *shell, t_input *lim, t_pipe	here);
 
 /*----------------------------------------------------------------------------*/
 /*---------------------------------- SIGNAL ----------------------------------*/

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/31 16:53:59 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/07 20:50:04 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/23 01:46:37 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,14 +75,12 @@ void	fake_heredoc(t_shell *shell, t_token *lim)
 	waitpid(pid, &(shell->ex_code), 0);
 }
 
-void	heredoc(t_shell *shell, t_ast_node *lim, t_pipe	here)
+void	heredoc(t_shell *shell, t_input *word, t_pipe	here)
 {
 	char	*line;
 	char	*s;
-	t_input	*word;
 
 	here_signal(shell);
-	word = lim->node;
 	while (1)
 	{
 		line = readline("heredoc> ");

@@ -6,7 +6,7 @@
 /*   By: mnazarya <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 18:28:18 by mnazarya          #+#    #+#             */
-/*   Updated: 2023/12/07 20:51:07 by mnazarya         ###   ########.fr       */
+/*   Updated: 2023/12/23 18:12:55 by mnazarya         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ char	*join_with_symbol(char *s1, char *s2, char c)
 
 	if (!s1 || !s2)
 		return (0);
-	str = (char *)malloc(sizeof(*s1) * (ft_strlen(s1) + ft_strlen(s2) + 2));
-	if (!str)
-		return (0);
+	str = ft_calloc(sizeof(*s1), (ft_strlen(s1) + ft_strlen(s2) + 2));
+	error_exit(!str, "malloc", 12);
 	i = 0;
 	j = 0;
 	while (s1[i])
